@@ -4,6 +4,7 @@ const detailAvatar = document.getElementById('detail-avatar');
 const detailName = document.getElementById('detail-name');
 const accusationThumb = document.getElementById('accusation-thumb');
 const additionalImg = document.getElementById('additional-img');
+const epilogueImg = document.getElementById('epilogue-img');
 const detailStatus = document.getElementById('detail-status');
 const closeDetail = document.getElementById('close-detail');
 
@@ -138,6 +139,18 @@ function openDetail(el){
     additionalImg.style.display = 'none';
   }
 
+  // 尾声 image (bjws.png)
+  const ep = el.dataset.epilogueImg;
+  if(ep){
+    epilogueImg.src = ep;
+    epilogueImg.alt = name + ' 尾声';
+    epilogueImg.style.display = '';
+  } else {
+    epilogueImg.src = '';
+    epilogueImg.alt = '';
+    epilogueImg.style.display = 'none';
+  }
+
   modal.setAttribute('aria-hidden', 'false');
   // focus management
   closeDetail.focus();
@@ -249,6 +262,10 @@ accusationThumb.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.ke
 // additional image opens in lightbox as well
 additionalImg.addEventListener('click', ()=> openLightbox(additionalImg.src, additionalImg.alt));
 additionalImg.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(additionalImg.src, additionalImg.alt); } });
+
+// epilogue image opens in lightbox as well
+epilogueImg?.addEventListener('click', ()=> openLightbox(epilogueImg.src, epilogueImg.alt));
+epilogueImg?.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(epilogueImg.src, epilogueImg.alt); } });
 
 closeLightbox.addEventListener('click', closeLightboxFunc);
 lightbox.addEventListener('click', (e)=>{
