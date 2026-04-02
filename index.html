@@ -49,9 +49,15 @@
   </div>
 
   <!-- Lightbox for enlarged accusation image -->
-  <div id="lightbox" class="lightbox" aria-hidden="true">
-    <img id="lightbox-img" src="" alt="放大图" />
-    <button class="close-btn" id="close-lightbox" aria-label="关闭">✕</button>
+  <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="lightbox-inner">
+      <div class="zoom-controls" aria-hidden="false">
+        <button id="zoom-out" class="zoom-btn" aria-label="缩小">−</button>
+        <button id="zoom-in" class="zoom-btn" aria-label="放大">＋</button>
+      </div>
+      <img id="lightbox-img" src="" alt="放大图" />
+      <button class="close-btn" id="close-lightbox" aria-label="关闭">✕</button>
+    </div>
   </div>
 
   <script type="module" src="script.js"></script>
