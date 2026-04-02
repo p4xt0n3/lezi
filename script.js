@@ -13,30 +13,89 @@ const closeLightbox = document.getElementById('close-lightbox');
 const zoomInBtn = document.getElementById('zoom-in');
 const zoomOutBtn = document.getElementById('zoom-out');
 const openOriginal = document.getElementById('open-original');
+const downloadBtn = document.getElementById('download-image');
+const fitBtn = document.getElementById('fit-btn');
+const actualBtn = document.getElementById('actual-btn');
+const rotateLeftBtn = document.getElementById('rotate-left');
+const rotateRightBtn = document.getElementById('rotate-right');
+const zoomIndicator = document.getElementById('zoom-indicator');
+const lightboxImageWrap = document.querySelector('.lightbox-image-wrap');
 
 let currentScale = 1;
 let offsetX = 0;
 let offsetY = 0;
+let currentRotation = 0;
 let isDragging = false;
 let dragStartX = 0;
 let dragStartY = 0;
 let dragOriginX = 0;
 let dragOriginY = 0;
+let lastTapTime = 0;
+let fitScale = 1;
+let viewerMode = 'fit'; // 'fit' | 'actual' | 'custom'
 
 const SCALE_STEP = 0.2;
-const SCALE_MIN = 0.5;
-const SCALE_MAX = 4;
+const SCALE_MIN = 0.1;
+const SCALE_MAX = 6;
+
+function updateZoomIndicator(){
+  if(!zoomIndicator) return;
+  const percent = Math.round(currentScale * 100);
+  zoomIndicator.textContent = `${percent}%`;
+}
 
 function applyTransform(){
   currentScale = Math.min(SCALE_MAX, Math.max(SCALE_MIN, currentScale));
-  lightboxImg.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${currentScale})`;
+  const transform = `translate(${offsetX}px, ${offsetY}px) scale(${currentScale}) rotate(${currentRotation}deg)`;
+  lightboxImg.style.transform = transform;
+  updateZoomIndicator();
 }
 
 function resetTransform(){
   currentScale = 1;
   offsetX = 0;
   offsetY = 0;
+  currentRotation = 0;
+  fitScale = 1;
+  viewerMode = 'fit';
   lightboxImg.style.transform = '';
+  updateZoomIndicator();
+}
+
+function computeFitScale(){
+  if(!lightboxImg.naturalWidth || !lightboxImg.naturalHeight || !lightboxImageWrap) return 1;
+  const wrapRect = lightboxImageWrap.getBoundingClientRect();
+  const iw = lightboxImg.naturalWidth;
+  const ih = lightboxImg.naturalHeight;
+  if(iw === 0 || ih === 0) return 1;
+  const scaleX = wrapRect.width / iw;
+  const scaleY = wrapRect.height / ih;
+  // Never upscale beyond 1x when fitting
+  return Math.min(scaleX, scaleY, 1);
+}
+
+function fitToScreen(){
+  fitScale = computeFitScale();
+  currentScale = fitScale;
+  offsetX = 0;
+  offsetY = 0;
+  currentRotation = 0;
+  viewerMode = 'fit';
+  applyTransform();
+}
+
+function setActualSize(){
+  currentScale = 1;
+  offsetX = 0;
+  offsetY = 0;
+  currentRotation = 0;
+  viewerMode = 'actual';
+  applyTransform();
+}
+
+function rotate(delta){
+  currentRotation = (currentRotation + delta + 360) % 360;
+  applyTransform();
 }
 
 function openDetail(el){
