@@ -48,16 +48,19 @@ function closeDetailModal(){
 }
 
 function openLightbox(src, alt){
+  // set image and show lightbox, lock page scroll for cleaner experience
   lightboxImg.src = src;
   lightboxImg.alt = alt || '';
   lightbox.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
   closeLightbox.focus();
 }
 
 function closeLightboxFunc(){
   lightbox.setAttribute('aria-hidden','true');
-  // remove src to release memory
+  // remove src to release memory and restore scrolling
   lightboxImg.src = '';
+  document.body.style.overflow = '';
 }
 
 entries.forEach(el=>{
