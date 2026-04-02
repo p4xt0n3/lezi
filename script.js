@@ -240,15 +240,15 @@ function endDrag(e){
 lightboxImg.addEventListener('pointerup', endDrag);
 lightboxImg.addEventListener('pointercancel', endDrag);
 
-// wheel zoom for convenience
+ // wheel scroll to pan image
 lightbox.addEventListener('wheel', (e)=>{
   if(lightbox.getAttribute('aria-hidden') === 'true') return;
   e.preventDefault();
-  if(e.deltaY < 0){
-    zoomIn();
-  }else{
-    zoomOut();
-  }
+  // Scroll-like panning: wheel up/down moves image up/down, shift or trackpad horizontal scroll moves left/right
+  const PAN_FACTOR = 1;
+  offsetY += -e.deltaY * PAN_FACTOR;
+  offsetX += -e.deltaX * PAN_FACTOR;
+  applyTransform();
 }, { passive:false });
 
 // clicking image when not zoomed closes, when zoomed resets position

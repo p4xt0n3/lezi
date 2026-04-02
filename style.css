@@ -307,8 +307,8 @@ body{
 
 /* viewer main area */
 .lightbox-image-wrap{
-  max-width:100%;
-  max-height:80vh;
+  width:min(100%,1322px);
+  height:min(80vh,1080px);
   overflow:hidden;
   border-radius:12px;
   display:flex;
