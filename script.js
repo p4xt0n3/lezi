@@ -36,7 +36,7 @@ let viewerMode = 'fit'; // 'fit' | 'actual' | 'custom'
 
 const SCALE_STEP = 0.2;
 const SCALE_MIN = 0.1;
-const SCALE_MAX = 6;
+const SCALE_MAX = 20;
 
 function updateZoomIndicator(){
   if(!zoomIndicator) return;
