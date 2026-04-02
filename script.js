@@ -1,11 +1,5 @@
 const entries = Array.from(document.querySelectorAll('.entry'));
 const modal = document.getElementById('detail-modal');
-const detailAvatar = document.getElementById('detail-avatar');
-const detailName = document.getElementById('detail-name');
-const accusationThumb = document.getElementById('accusation-thumb');
-const additionalImg = document.getElementById('additional-img');
-const epilogueImg = document.getElementById('epilogue-img');
-const detailStatus = document.getElementById('detail-status');
 const closeDetail = document.getElementById('close-detail');
 
 const lightbox = document.getElementById('lightbox');
@@ -114,45 +108,8 @@ function rotate(delta){
   applyTransform();
 }
 
-function openDetail(el){
-  const name = el.dataset.name;
-  const img = el.dataset.img;
-  const accusation = el.dataset.accusationImg;
-  const tq = el.dataset.tqImg;
-
-  detailAvatar.src = img;
-  detailAvatar.alt = name + ' 头像';
-  detailName.textContent = name;
-  // set status text
-  detailStatus.textContent = '现状态：已被被默纳罗斯制裁退群';
-  // accusation thumb
-  accusationThumb.src = accusation;
-  accusationThumb.alt = '罪名 预览';
-  // additional image (bjtq.jpg)
-  if(tq){
-    additionalImg.src = tq;
-    additionalImg.alt = name + ' 补充图';
-    additionalImg.style.display = '';
-  } else {
-    additionalImg.src = '';
-    additionalImg.alt = '';
-    additionalImg.style.display = 'none';
-  }
-
-  // 尾声 image (bjws.png)
-  const ep = el.dataset.epilogueImg;
-  if(ep){
-    epilogueImg.src = ep;
-    epilogueImg.alt = name + ' 尾声';
-    epilogueImg.style.display = '';
-  } else {
-    epilogueImg.src = '';
-    epilogueImg.alt = '';
-    epilogueImg.style.display = 'none';
-  }
-
+function openDetail(){
   modal.setAttribute('aria-hidden', 'false');
-  // focus management
   closeDetail.focus();
 }
 
@@ -231,9 +188,9 @@ if(zoomInput){
 }
 
 entries.forEach(el=>{
-  el.addEventListener('click', ()=> openDetail(el));
+  el.addEventListener('click', ()=> openDetail());
   el.addEventListener('keydown', (e)=>{
-    if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(el); }
+    if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail(); }
   });
 });
 
@@ -256,26 +213,27 @@ document.addEventListener('keydown', (e)=>{
   }
 });
 
-accusationThumb.addEventListener('click', ()=> openLightbox(accusationThumb.src, accusationThumb.alt));
-accusationThumb.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(accusationThumb.src, accusationThumb.alt); } });
-
-// additional image opens in lightbox as well
-additionalImg.addEventListener('click', ()=> openLightbox(additionalImg.src, additionalImg.alt));
-additionalImg.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(additionalImg.src, additionalImg.alt); } });
-
-// epilogue image opens in lightbox as well
-epilogueImg?.addEventListener('click', ()=> openLightbox(epilogueImg.src, epilogueImg.alt));
-epilogueImg?.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(epilogueImg.src, epilogueImg.alt); } });
-
 closeLightbox.addEventListener('click', closeLightboxFunc);
 lightbox.addEventListener('click', (e)=>{
   // clicking outside inner area should close
   if(e.target === lightbox) closeLightboxFunc();
 });
 
-// zoom buttons
+ // zoom buttons
 zoomInBtn?.addEventListener('click', zoomIn);
 zoomOutBtn?.addEventListener('click', zoomOut);
+
+// crime images open in lightbox
+const crimeThumbs = document.querySelectorAll('.crime-thumb');
+crimeThumbs.forEach(img=>{
+  img.addEventListener('click', ()=> openLightbox(img.dataset.original || img.src, img.alt));
+  img.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      openLightbox(img.dataset.original || img.src, img.alt);
+    }
+  });
+});
 
 // drag-to-pan for zoomed image
 lightboxImg.addEventListener('pointerdown', (e)=>{

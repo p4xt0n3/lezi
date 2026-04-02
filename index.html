@@ -11,7 +11,7 @@
     <h1 id="rainbow-title" aria-hidden="true">猎奇回战乐子榜</h1>
 
     <section class="leaderboard" role="list" aria-label="榜单">
-      <div class="entry" role="listitem" tabindex="0" data-name="冰忌（3028930771）" data-img="bj.png" data-accusation-img="bjzm.png" data-tq-img="bjtq.jpg" data-epilogue-img="bjws.png" aria-label="第一名 冰忌（3028930771）">
+      <div class="entry" role="listitem" tabindex="0" data-name="冰忌（3028930771）" data-img="bj.png" data-accusation-img="bjzm.png" data-epilogue-img="bjws.png" aria-label="第一名 冰忌（3028930771）">
         <div class="rank" aria-hidden="true"><span class="num">1</span></div>
         <img src="bj.png" alt="冰忌 头像" class="avatar" />
         <div class="meta">
@@ -28,26 +28,62 @@
 
   <!-- Modal for entry details -->
   <div id="detail-modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal-sheet" role="document">
+    <div class="modal-sheet modal-sheet-wide" role="document">
       <button class="close-btn" id="close-detail" aria-label="关闭">✕</button>
-      <div class="detail-content">
-        <img id="detail-avatar" src="" alt="" class="detail-avatar"/>
-        <div class="detail-name" id="detail-name"></div>
-
-        <div class="status" id="detail-status" style="color:var(--muted);font-weight:600;">现状态：</div>
-
-        <div class="accusation">
-          <div class="accusation-label">罪名：</div>
-          <img id="accusation-thumb" src="" alt="罪名预览" class="accusation-thumb" tabindex="0" />
-        </div>
-
-        <div class="tq-image" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:8px;">
-          <img id="additional-img" src="" alt="补充图片" class="accusation-thumb" tabindex="0" style="width:160px;height:100px;object-fit:cover;border-radius:8px;" />
-          <div class="epilogue" style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;">
-            <div class="accusation-label" style="font-weight:700">尾声：</div>
-            <img id="epilogue-img" src="" alt="尾声 预览" class="accusation-thumb" tabindex="0" style="width:160px;height:100px;object-fit:cover;border-radius:8px;" />
+      <div class="detail-layout">
+        <header class="detail-header">
+          <img src="bj.png" alt="冰忌 头像" class="detail-avatar"/>
+          <div class="detail-header-text">
+            <div class="detail-name">冰忌（3028930771）</div>
+            <div class="detail-meta">事件开始时间：2026年4月1日</div>
           </div>
-        </div>
+        </header>
+
+        <section class="detail-main">
+          <div class="section-title">罪行：乐子行为 无脑乱喷 嫉妒大罪</div>
+          <div class="crime-images">
+            <img src="bjzm.png" alt="冰忌 罪行 1" class="crime-thumb" tabindex="0" data-original="bjzm.png" />
+            <img src="bj1.png" alt="冰忌 罪行 2" class="crime-thumb" tabindex="0" data-original="bj1.png" />
+            <img src="bj2.png" alt="冰忌 罪行 3" class="crime-thumb" tabindex="0" data-original="bj2.png" />
+            <img src="bj3.png" alt="冰忌 罪行 4" class="crime-thumb" tabindex="0" data-original="bj3.png" />
+            <img src="bj4.png" alt="冰忌 罪行 5" class="crime-thumb" tabindex="0" data-original="bj4.png" />
+            <img src="bj5.png" alt="冰忌 罪行 6" class="crime-thumb" tabindex="0" data-original="bj5.png" />
+            <img src="bj6.png" alt="冰忌 罪行 7" class="crime-thumb" tabindex="0" data-original="bj6.png" />
+            <img src="bj7.png" alt="冰忌 罪行 8" class="crime-thumb" tabindex="0" data-original="bj7.png" />
+            <img src="bj8.png" alt="冰忌 罪行 9" class="crime-thumb" tabindex="0" data-original="bj8.png" />
+            <img src="bj9.png" alt="冰忌 罪行 10" class="crime-thumb" tabindex="0" data-original="bj9.png" />
+            <img src="bj10.png" alt="冰忌 罪行 11" class="crime-thumb" tabindex="0" data-original="bj10.png" />
+            <img src="bj11.png" alt="冰忌 罪行 12" class="crime-thumb" tabindex="0" data-original="bj11.png" />
+            <img src="bj12.png" alt="冰忌 罪行 13" class="crime-thumb" tabindex="0" data-original="bj12.png" />
+            <img src="bj13.png" alt="冰忌 罪行 14" class="crime-thumb" tabindex="0" data-original="bj13.png" />
+            <img src="bj14.png" alt="冰忌 罪行 15" class="crime-thumb" tabindex="0" data-original="bj14.png" />
+            <img src="bj15.png" alt="冰忌 罪行 16" class="crime-thumb" tabindex="0" data-original="bj15.png" />
+            <img src="bj16.png" alt="冰忌 罪行 17" class="crime-thumb" tabindex="0" data-original="bj16.png" />
+            <img src="bj17.png" alt="冰忌 罪行 18" class="crime-thumb" tabindex="0" data-original="bj17.png" />
+            <img src="bj18.png" alt="冰忌 罪行 19" class="crime-thumb" tabindex="0" data-original="bj18.png" />
+            <img src="bj19.png" alt="冰忌 罪行 20" class="crime-thumb" tabindex="0" data-original="bj19.png" />
+            <img src="bj20.png" alt="冰忌 罪行 21" class="crime-thumb" tabindex="0" data-original="bj20.png" />
+            <img src="bj21.png" alt="冰忌 罪行 22" class="crime-thumb" tabindex="0" data-original="bj21.png" />
+          </div>
+
+          <div class="subsection">
+            <div class="section-subtitle" style="font-weight:800;color:var(--accent2);margin-top:8px;margin-bottom:8px;">默纳罗斯发言</div>
+            <div class="crime-images">
+              <img src="bjgj1.png" alt="默纳罗斯 发言 1" class="crime-thumb" tabindex="0" data-original="bjgj1.png" />
+              <img src="bjgj2.png" alt="默纳罗斯 发言 2" class="crime-thumb" tabindex="0" data-original="bjgj2.png" />
+              <img src="bjgj3.png" alt="默纳罗斯 发言 3" class="crime-thumb" tabindex="0" data-original="bjgj3.png" />
+            </div>
+          </div>
+
+          <div class="subsection">
+            <div class="section-subtitle" style="font-weight:800;color:var(--accent2);margin-top:8px;margin-bottom:8px;">城黎奚落发言</div>
+            <div class="crime-images">
+              <img src="bjcl1.png" alt="城黎奚落 发言 1" class="crime-thumb" tabindex="0" data-original="bjcl1.png" />
+            </div>
+          </div>
+
+          <div class="status status-line">现状态：已道歉</div>
+        </section>
       </div>
     </div>
   </div>
