@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <title>猎奇回战乐子榜</title>
+</head>
+<body>
+  <main id="app">
+    <h1 id="rainbow-title" aria-hidden="true">猎奇回战乐子榜</h1>
+
+    <section class="leaderboard" role="list" aria-label="榜单">
+      <div class="entry" role="listitem" tabindex="0" data-name="冰忌（3028930771）" data-img="bj.png" data-accusation-img="bjzm.png" data-tq-img="bjtq.jpg">
+        <img src="bj.png" alt="冰忌 头像" class="avatar" />
+        <div class="meta">
+          <div class="name">冰忌（3028930771）</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Right-side decorative image -->
+  <div class="side-image" aria-hidden="true">
+    <img src="nb.png" alt="" />
+  </div>
+
+  <!-- Modal for entry details -->
+  <div id="detail-modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-sheet" role="document">
+      <button class="close-btn" id="close-detail" aria-label="关闭">✕</button>
+      <div class="detail-content">
+        <img id="detail-avatar" src="" alt="" class="detail-avatar"/>
+        <div class="detail-name" id="detail-name"></div>
+
+        <div class="status" id="detail-status" style="color:var(--muted);font-weight:600;">现状态：</div>
+
+        <div class="accusation">
+          <div class="accusation-label">罪名：</div>
+          <img id="accusation-thumb" src="" alt="罪名预览" class="accusation-thumb" tabindex="0" />
+        </div>
+
+        <div class="tq-image" style="width:100%;display:flex;justify-content:center;margin-top:8px;">
+          <img id="additional-img" src="" alt="补充图片" class="accusation-thumb" tabindex="0" style="width:160px;height:100px;object-fit:cover;border-radius:8px;" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox for enlarged accusation image -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <img id="lightbox-img" src="" alt="放大图" />
+    <button class="close-btn" id="close-lightbox" aria-label="关闭">✕</button>
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
