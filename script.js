@@ -19,7 +19,26 @@ const actualBtn = document.getElementById('actual-btn');
 const rotateLeftBtn = document.getElementById('rotate-left');
 const rotateRightBtn = document.getElementById('rotate-right');
 const zoomIndicator = document.getElementById('zoom-indicator');
+const zoomInput = document.getElementById('zoom-input');
 const lightboxImageWrap = document.querySelector('.lightbox-image-wrap');
+
+// sync input and indicator
+function clampPercent(p){
+  const minP = Math.round(SCALE_MIN * 100);
+  const maxP = Math.round(SCALE_MAX * 100);
+  if(isNaN(p)) return Math.round(currentScale * 100);
+  return Math.min(maxP, Math.max(minP, Math.round(p)));
+}
+
+function updateZoomIndicator(){
+  if(!zoomIndicator) return;
+  const percent = Math.round(currentScale * 100);
+  zoomIndicator.textContent = `${percent}%`;
+  if(zoomInput){
+    const clamped = clampPercent(percent);
+    if(String(zoomInput.value) !== String(clamped)) zoomInput.value = clamped;
+  }
+}
 
 let currentScale = 1;
 let offsetX = 0;
@@ -38,11 +57,7 @@ const SCALE_STEP = 0.2;
 const SCALE_MIN = 0.1;
 const SCALE_MAX = 20;
 
-function updateZoomIndicator(){
-  if(!zoomIndicator) return;
-  const percent = Math.round(currentScale * 100);
-  zoomIndicator.textContent = `${percent}%`;
-}
+/* NOTE: updateZoomIndicator defined above (replaced earlier) */
 
 function applyTransform(){
   currentScale = Math.min(SCALE_MAX, Math.max(SCALE_MIN, currentScale));
@@ -164,6 +179,42 @@ function zoomIn(){
 function zoomOut(){
   currentScale = +(currentScale - SCALE_STEP).toFixed(2);
   applyTransform();
+}
+
+// handle numeric percent input events to set zoom
+if(zoomInput){
+  // when typing or pasting, allow live feedback on Enter/blur
+  function applyZoomFromInput(){
+    const val = Number(zoomInput.value);
+    if(isNaN(val)) return;
+    const clamped = clampPercent(val);
+    zoomInput.value = clamped;
+    currentScale = +(clamped / 100);
+    applyTransform();
+  }
+
+  zoomInput.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter'){
+      e.preventDefault();
+      applyZoomFromInput();
+    } else if(e.key === 'Escape'){
+      // revert to current scale readout
+      const cur = Math.round(currentScale * 100);
+      zoomInput.value = cur;
+      zoomInput.blur();
+    }
+  });
+
+  zoomInput.addEventListener('blur', applyZoomFromInput);
+  // optional live change as user types (keeps indicator synced)
+  zoomInput.addEventListener('input', ()=>{
+    const val = Number(zoomInput.value);
+    if(!isNaN(val)){
+      const clamped = clampPercent(val);
+      // show immediate indicator but don't apply heavy transforms until blur/enter
+      zoomIndicator.textContent = `${clamped}%`;
+    }
+  });
 }
 
 entries.forEach(el=>{
