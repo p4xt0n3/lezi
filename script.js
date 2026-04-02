@@ -12,20 +12,30 @@ const lightboxImg = document.getElementById('lightbox-img');
 const closeLightbox = document.getElementById('close-lightbox');
 const zoomInBtn = document.getElementById('zoom-in');
 const zoomOutBtn = document.getElementById('zoom-out');
+const openOriginal = document.getElementById('open-original');
 
 let currentScale = 1;
+let offsetX = 0;
+let offsetY = 0;
+let isDragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
+let dragOriginX = 0;
+let dragOriginY = 0;
+
 const SCALE_STEP = 0.2;
 const SCALE_MIN = 0.5;
-const SCALE_MAX = 3;
+const SCALE_MAX = 4;
 
-function applyScale(){
-  // apply transform with clamping
+function applyTransform(){
   currentScale = Math.min(SCALE_MAX, Math.max(SCALE_MIN, currentScale));
-  lightboxImg.style.transform = `scale(${currentScale})`;
+  lightboxImg.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${currentScale})`;
 }
 
-function resetScale(){
+function resetTransform(){
   currentScale = 1;
+  offsetX = 0;
+  offsetY = 0;
   lightboxImg.style.transform = '';
 }
 
@@ -69,9 +79,12 @@ function openLightbox(src, alt){
   // set image and show lightbox, lock page scroll for cleaner experience
   lightboxImg.src = src;
   lightboxImg.alt = alt || '';
-  resetScale();
+  resetTransform();
   lightbox.setAttribute('aria-hidden','false');
   document.body.style.overflow = 'hidden';
+  if(openOriginal){
+    openOriginal.href = src;
+  }
   // focus the close button for keyboard users
   closeLightbox.focus();
 }
@@ -80,18 +93,18 @@ function closeLightboxFunc(){
   lightbox.setAttribute('aria-hidden','true');
   // remove src to release memory and restore scrolling
   lightboxImg.src = '';
-  resetScale();
+  resetTransform();
   document.body.style.overflow = '';
 }
 
 // zoom controls
 function zoomIn(){
   currentScale = +(currentScale + SCALE_STEP).toFixed(2);
-  applyScale();
+  applyTransform();
 }
 function zoomOut(){
   currentScale = +(currentScale - SCALE_STEP).toFixed(2);
-  applyScale();
+  applyTransform();
 }
 
 entries.forEach(el=>{
@@ -137,13 +150,54 @@ lightbox.addEventListener('click', (e)=>{
 zoomInBtn?.addEventListener('click', zoomIn);
 zoomOutBtn?.addEventListener('click', zoomOut);
 
-// make image itself toggle close on click, but preserve zoom when clicked
+// drag-to-pan for zoomed image
+lightboxImg.addEventListener('pointerdown', (e)=>{
+  if(currentScale <= 1) return;
+  isDragging = true;
+  dragStartX = e.clientX;
+  dragStartY = e.clientY;
+  dragOriginX = offsetX;
+  dragOriginY = offsetY;
+  lightboxImg.setPointerCapture(e.pointerId);
+});
+
+lightboxImg.addEventListener('pointermove', (e)=>{
+  if(!isDragging) return;
+  const dx = e.clientX - dragStartX;
+  const dy = e.clientY - dragStartY;
+  offsetX = dragOriginX + dx;
+  offsetY = dragOriginY + dy;
+  applyTransform();
+});
+
+function endDrag(e){
+  if(!isDragging) return;
+  isDragging = false;
+  try{
+    lightboxImg.releasePointerCapture(e.pointerId);
+  }catch(_){}
+}
+
+lightboxImg.addEventListener('pointerup', endDrag);
+lightboxImg.addEventListener('pointercancel', endDrag);
+
+// wheel zoom for convenience
+lightbox.addEventListener('wheel', (e)=>{
+  if(lightbox.getAttribute('aria-hidden') === 'true') return;
+  e.preventDefault();
+  if(e.deltaY < 0){
+    zoomIn();
+  }else{
+    zoomOut();
+  }
+}, { passive:false });
+
+// clicking image when not zoomed closes, when zoomed resets position
 lightboxImg.addEventListener('click', ()=> {
-  // if scale is nearly 1, treat click as close; otherwise toggle back to 1
   if(Math.abs(currentScale - 1) < 0.01) {
     closeLightboxFunc();
   } else {
-    currentScale = 1;
-    applyScale();
+    resetTransform();
+    applyTransform();
   }
 });
